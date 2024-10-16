@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { AppConfigService } from 'src/shared/modules/config/config.service';
+import { CurrencyBalanceDTO } from './dto/payment-info.dto';
 
 @Injectable()
 export class BalanceService {
@@ -13,7 +14,7 @@ export class BalanceService {
   }
   private url = '';
 
-  async getBalance(): Promise<any> {
+  async getBalance(): Promise<CurrencyBalanceDTO[]> {
     const serviceUrl = `${this.url}/v1/payout/user/balances`;
     try {
       const response = await firstValueFrom(this.httpService.get(serviceUrl));

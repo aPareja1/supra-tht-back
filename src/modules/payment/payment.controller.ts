@@ -13,6 +13,7 @@ import {
 import { PaymentRequestDTO } from './dto/payment.request.dto';
 import { PaymentService } from './payment.service';
 import { BalanceService } from './balance.service';
+import { CurrencyBalanceDTO, PaymentInfoDTO } from './dto/payment-info.dto';
 
 @Controller('payment')
 export class PaymentController {
@@ -24,7 +25,7 @@ export class PaymentController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async postQuote(
     @Body() paymentRequest: PaymentRequestDTO,
-  ): Promise<Response> {
+  ): Promise<PaymentInfoDTO> {
     const defaultValues = {
       referenceId: 'ABC456789',
       documentType: 'CC',
@@ -49,7 +50,7 @@ export class PaymentController {
   @Get(':id')
   async getPayment(
     @Param('id') id: string,
-  ): Promise<{ payment: any; balance: any }> {
+  ): Promise<{ payment: PaymentInfoDTO; balance: CurrencyBalanceDTO[] }> {
     const payment = await this.paymentService.getPayment(id);
     const balance = await this.balanceService.getBalance();
     return { payment, balance };
